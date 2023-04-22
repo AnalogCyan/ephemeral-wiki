@@ -43,7 +43,7 @@ If you also deploy to Google Cloud, be sure to update the code to match your con
 
 This implementation uses the GPT-3.5-Turbo model from OpenAI. If you wish to use a different model, you can modify the `generate` function in `app.py`.
 
-## Adjust the Prompt
+### Adjust the Prompt
 
 This implementation uses a predefined prompt for generating content with the GPT-3.5-Turbo model, and includes some specific notes for the Ephemeral Wiki. If you wish to change the prompt, you can modify the `generate` function in `app.py`.
 
