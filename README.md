@@ -1,6 +1,6 @@
 # Ephemeral Wiki
 
-Ephemeral Wiki is a Flask application that uses GPT-3.5-Turbo to generate ephemeral web pages on the fly. It was inspired by LiveOverflow on YouTube, but there was no live version or source code available at the time of writing the code. Visit the live app here: https://ephemeral.wiki/
+Ephemeral Wiki is a Flask application that uses GPT-3.5-Turbo to generate ephemeral web pages on the fly. It was inspired by LiveOverflow on YouTube, but there was no live version or source code available at the time of writing this code. Visit the live app here: https://ephemeral.wiki/
 
 You can find LiveOverflow's video and repo here:
 
