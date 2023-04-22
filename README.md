@@ -57,3 +57,5 @@ Open your web browser and visit http://localhost:8080, or the deployed location 
 Contributions are welcome! Feel free to submit issues, feature requests, or pull requests.
 
 ## License
+
+This project is licensed under the [MIT License](./LICENSE).
