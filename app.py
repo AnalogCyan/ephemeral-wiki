@@ -17,7 +17,7 @@ client = AsyncOpenAI(
     api_key=os.environ.get("OPENROUTER_API_KEY", ""),
 )
 
-MODEL = os.environ.get("MODEL", "google/gemini-2.5-flash")
+MODEL = os.environ.get("MODEL", "openrouter/free")
 RATE_LIMIT = os.environ.get("RATE_LIMIT", "10/minute")
 CACHE_TTL = int(os.environ.get("CACHE_TTL", "600"))
 ALLOWED_ORIGINS = [
