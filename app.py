@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 from cachetools import TTLCache
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,8 +22,6 @@ MODEL = os.environ.get("MODEL", "openrouter/free")
 RATE_LIMIT = os.environ.get("RATE_LIMIT", "10/minute")
 CACHE_TTL = int(os.environ.get("CACHE_TTL", "600"))
 ALLOWED_ORIGINS = [
-    "https://ephemeral.wiki",
-    "https://www.ephemeral.wiki",
     "https://ephemeral-wiki.onrender.com",
 ]
 
@@ -64,6 +63,9 @@ async def security_headers(request: Request, call_next):
 
 SYSTEM_PROMPT = (
     "You are Ephemeral Wiki, a website where every page is generated on-the-fly by AI. "
+    "Your output is served directly as a web page. "
+    "Output ONLY raw HTML. NEVER wrap output in ```html``` code fences or markdown formatting. "
+    "The very first character of your response must be '<'. "
     "Generate a complete, self-contained HTML document with inline CSS styling. "
     "Include a <head> with a descriptive <title> and a <meta charset='utf-8'>. "
     "Use clean, readable typography and a pleasant color scheme. "
@@ -97,6 +99,12 @@ def build_prompt(path: str) -> str:
     return f"Generate an HTML page about: {readable}\nURL path: /{path}"
 
 
+def strip_fences(html: str) -> str:
+    html = re.sub(r"^```(?:html)?\s*\n?", "", html)
+    html = re.sub(r"\n?```\s*$", "", html)
+    return html
+
+
 async def generate_stream(path: str):
     prompt = build_prompt(path)
     try:
@@ -109,13 +117,23 @@ async def generate_stream(path: str):
             max_tokens=4096,
             stream=True,
         )
-        chunks = []
+        buffer = []
+        streaming = False
         async for chunk in stream:
             if chunk.choices and chunk.choices[0].delta.content:
                 text = chunk.choices[0].delta.content
-                chunks.append(text)
-                yield text
-        cache[path] = "".join(chunks)
+                if not streaming:
+                    buffer.append(text)
+                    joined = "".join(buffer)
+                    idx = joined.find("<")
+                    if idx != -1:
+                        streaming = True
+                        yield joined[idx:]
+                else:
+                    buffer.append(text)
+                    yield text
+        full = strip_fences("".join(buffer))
+        cache[path] = full
         log.info("Generated page for /%s", path)
     except Exception as e:
         log.error("Generation failed for /%s: %s", path, e)
