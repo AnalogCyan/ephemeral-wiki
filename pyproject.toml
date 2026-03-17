@@ -1,0 +1,20 @@
+[project]
+name = "ephemeral-wiki"
+version = "2.0.0"
+description = "AI-generated ephemeral web pages"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.115.*",
+    "uvicorn[standard]==0.34.*",
+    "openai==1.82.*",
+    "slowapi==0.1.*",
+    "cachetools==5.5.*",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.*",
+    "httpx==0.28.*",
+    "pytest-asyncio==0.25.*",
+]
