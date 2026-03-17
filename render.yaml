@@ -9,6 +9,6 @@ services:
       - key: OPENROUTER_API_KEY
         sync: false
       - key: MODEL
-        value: openrouter/auto
+        value: google/gemini-2.5-flash:free
       - key: PYTHON_VERSION
         value: "3.12"

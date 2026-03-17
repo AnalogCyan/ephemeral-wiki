@@ -17,12 +17,13 @@ client = AsyncOpenAI(
     api_key=os.environ.get("OPENROUTER_API_KEY", ""),
 )
 
-MODEL = os.environ.get("MODEL", "openrouter/auto")
+MODEL = os.environ.get("MODEL", "google/gemini-2.5-flash:free")
 RATE_LIMIT = os.environ.get("RATE_LIMIT", "10/minute")
 CACHE_TTL = int(os.environ.get("CACHE_TTL", "600"))
 ALLOWED_ORIGINS = [
     "https://ephemeral.wiki",
     "https://www.ephemeral.wiki",
+    "https://ephemeral-wiki.onrender.com",
 ]
 
 cache: TTLCache = TTLCache(maxsize=256, ttl=CACHE_TTL)
